@@ -12,7 +12,7 @@
 	<artifactId>paypilot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>PayPilot</name>
-	<description>A fin-tech application that allows you to perform various financial transactions</description>
+	<description>A fintech application that allows you to perform various financial transactions</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -54,6 +54,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>paypilot</finalName>
 	</build>
 
 </project>
