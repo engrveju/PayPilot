@@ -54,7 +54,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>paypilot</finalName>
+		<finalName>pay-pilot</finalName>
 	</build>
 
 </project>
