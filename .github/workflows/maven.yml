@@ -28,6 +28,6 @@ jobs:
           image: vejutech/pay-pilot
           tags: latest
           registry: docker.io
-          dockerfile: Dockerfile.alpine
+          dockerfile: Dockerfile.alpine.alpine
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
