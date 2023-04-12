@@ -12,5 +12,6 @@ public class Payposh {
     @GetMapping("/docker")
     public String jide(){
         return "This is coming from a docker image";
+
     }
 }
