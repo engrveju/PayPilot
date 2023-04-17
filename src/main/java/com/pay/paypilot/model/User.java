@@ -1,28 +1,48 @@
 package com.pay.paypilot.model;
 
-import com.pay.paypilot.enums.Roles;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import java.time.Duration;
+import com.pay.paypilot.enums.Gender;
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDate;
+import java.util.Collection;
+
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends Person{
+@Builder
+@ToString
+@Table(name = "user_table")
+public class User
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String username;
+    private Long userId;
+    private String firstName;
+    private String lastName;
+    private String otherName;
+    private String uuid;
+    @OneToOne
+    @JoinColumn(name = "address",referencedColumnName = "addressId")
+    private Address address;
+    private String email;
     private String password;
-    private Boolean isVerified;
-    private int loginAttempts;
-    private Duration duration;
-    private Boolean isEnabled;
-    private Boolean isLocked;
-    private Roles role;
+    private Integer userBvn;
+    private LocalDate dateOfBirth;
+    private Gender gender;
+    private Boolean isEmailVerified = false;
+    private Boolean isBvnVerified = false;
+    private Boolean isLocked = false;
+    private String confirmationToken;
+    private String phoneNumber;
+    private int loginCount;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "userId"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
+
+
 }
