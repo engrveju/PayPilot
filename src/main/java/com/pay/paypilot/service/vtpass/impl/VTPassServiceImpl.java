@@ -3,7 +3,11 @@ package com.pay.paypilot.service.vtpass.impl;
 import com.pay.paypilot.service.vtpass.VTPassService;
 import com.pay.paypilot.service.vtpass.pojos.request.BuyAirtimeRequest;
 import com.pay.paypilot.service.vtpass.pojos.request.BuyDataPlanRequest;
+import com.pay.paypilot.service.vtpass.pojos.request.BuyElectricityRequest;
+import com.pay.paypilot.service.vtpass.pojos.request.VerifyMerchantRequest;
 import com.pay.paypilot.service.vtpass.pojos.response.data.*;
+import com.pay.paypilot.service.vtpass.pojos.response.electricity.BuyElectricityResponse;
+import com.pay.paypilot.service.vtpass.pojos.response.electricity.VerifyMerchantResponse;
 import com.pay.paypilot.utils.AppUtil;
 import com.pay.paypilot.utils.VTPassHttpEntity;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +61,16 @@ public class VTPassServiceImpl implements VTPassService {
     }
 
     @Override
+    public AirtimeServiceResponse getAirtimeServices() {
+        return restTemplate.exchange(
+                All_AIRTIME_SERVICES,
+                HttpMethod.GET,
+                vtPassHttpEntity.getEntity(null),
+                AirtimeServiceResponse.class
+        ).getBody();
+
+    }
+    @Override
     public BuyAirtimeResponse buyAirtime(BuyAirtimeRequest buyAirtimeRequest) {
         buyAirtimeRequest.setRequest_id(getRequestId());
         return restTemplate.exchange(
@@ -67,18 +81,40 @@ public class VTPassServiceImpl implements VTPassService {
         ).getBody();
     }
 
+    @Override
+    public DataServicesResponse getAllElectricityService() {
+        return restTemplate
+                .exchange(
+                        ALL_ELECTRICITY_SERVICES,
+                        HttpMethod.GET,
+                        vtPassHttpEntity.getEntity(null),
+                        DataServicesResponse.class
+                ).getBody();
+    }
 
     @Override
-    public AirtimeServiceResponse getAirtimeServices() {
-        return restTemplate.exchange(
-                All_AIRTIME_SERVICES,
-                HttpMethod.GET,
-                vtPassHttpEntity.getEntity(null),
-                AirtimeServiceResponse.class
-        ).getBody();
+    public VerifyMerchantResponse verifyElectricityMeter(VerifyMerchantRequest merchantRequest) {
+        return restTemplate
+                .exchange(
+                        VERIFY_MERCHANT,
+                        HttpMethod.POST,
+                        vtPassHttpEntity.getEntity(merchantRequest),
+                        VerifyMerchantResponse.class
+                ).getBody();
 
     }
 
+    @Override
+    public BuyElectricityResponse buyElectricity(BuyElectricityRequest electricityRequest) {
+        electricityRequest.setRequest_id(getRequestId());
+
+        return restTemplate.exchange(
+                PAY_BILL,
+                HttpMethod.POST,
+                vtPassHttpEntity.getEntity(electricityRequest),
+                BuyElectricityResponse.class
+        ).getBody();
+    }
 
     /**
      * <a href="https://www.vtpass.com/documentation/how-to-generate-request-id/">...</a>
