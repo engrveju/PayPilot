@@ -1,5 +1,7 @@
 package com.pay.paypilot.utils;
 
+import org.springframework.beans.factory.annotation.Value;
+
 /**
  * @author Emmanuel Ugwueze
  * @created 26/06/2023 - 11:33
@@ -7,7 +9,8 @@ package com.pay.paypilot.utils;
  */
 
 public class VTPassConstants {
-    public final static String BILLER_CODE = "08137733402";
+    @Value("${biller.default.number}")
+    public  static String BILLER_CODE;
  
     public final static String PAY_BILL_SERVICE = "https://sandbox.vtpass.com/api/service-variations?serviceID=";
     public final static String PAY_BILL = "https://sandbox.vtpass.com/api/pay";

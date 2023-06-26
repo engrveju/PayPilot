@@ -34,9 +34,7 @@ public class TransactionResponse {
     public static TransactionResponse mapFromTransaction (Transaction transaction){
         return TransactionResponse.builder()
                 .transactionId(transaction.getTransactionId())
-                .referenceNumber(transaction.getReferenceNumber())
                 .name(transaction.getName())
-                .bankCode(transaction.getBankCode())
                 .amount(transaction.getAmount())
                 .transactionReference(transaction.getTransactionReference())
                 .transactionType(transaction.getTransactionType())

@@ -163,7 +163,6 @@ public class WalletServiceImpl implements WalletService {
 
             Transaction walletTransaction = Transaction.builder()
                     .name(request.getServiceID())
-                    .bankCode(request.getPhone())
                     .wallet(updatedWallet)
                     .transactionType(TransactionType.DEBIT)
                     .amount(request.getAmount())
@@ -227,7 +226,6 @@ public class WalletServiceImpl implements WalletService {
 
             Transaction walletTransaction = Transaction.builder()
                     .name(electricityRequest.getServiceID())
-                    .bankCode(electricityRequest.getPhone())
                     .wallet(wallet)
                     .transactionType(TransactionType.DEBIT)
                     .amount(electricityRequest.getAmount())
@@ -256,7 +254,6 @@ public class WalletServiceImpl implements WalletService {
 
             Transaction walletTransaction = Transaction.builder()
                     .name(buyAirtimeRequest.getServiceID())
-                    .bankCode(buyAirtimeRequest.getPhone())
                     .wallet(updatedWallet)
                     .transactionType(TransactionType.DEBIT)
                     .amount(buyAirtimeRequest.getAmount())

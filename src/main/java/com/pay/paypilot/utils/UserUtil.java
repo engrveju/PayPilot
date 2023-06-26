@@ -12,10 +12,9 @@ import org.springframework.stereotype.Component;
 @Data
 public class UserUtil {
 
-    public String getAuthenticatedUserEmail(){
+    public static String getAuthenticatedUserEmail(){
 
       UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
       return userDetails.getUsername();
     }
 

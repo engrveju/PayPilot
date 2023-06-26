@@ -78,15 +78,21 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {BadCredentialsException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorResponse BadCredentialsException(BadCredentialsException ex) {
+    public ErrorResponse badCredentialsException(BadCredentialsException ex) {
         return buildErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(value = {EmailNotConfirmedException.class})
     @ResponseStatus(HttpStatus.LOCKED)
-    public ErrorResponse EmailNotConfirmedException(EmailNotConfirmedException ex) {
+    public ErrorResponse emailNotConfirmedException(EmailNotConfirmedException ex) {
         log.error(ex.getMessage());
         return buildErrorResponse(ex.getMessage(), HttpStatus.LOCKED);
+    }
+
+    @ExceptionHandler(value = {WalletTransactionException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse transactionNotFoundException(WalletTransactionException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 
 }
