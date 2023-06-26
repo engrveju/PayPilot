@@ -3,11 +3,17 @@ package com.pay.paypilot.config.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -15,33 +21,35 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
-@Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
+@Configuration
 public class WebSecurity {
-    private final JwtAuthFilter jwtAuthFilter;
-    private final AuthenticationProvider authenticationProvider;
-    //  private final LogoutHandler logoutHandler;
-    private final String[] WHITE_LISTED_URLS = {  "/api/v1/customer/signup","/api/v1/customer/verifyRegistration/**"
-            ,"/api/v1/**","/api/v1/category/**", "/api/v1/subcategory/**", "/api/v1/finalizeTrans/**", "/api/v1/state/**", "/api/v1/products/new-arrivals",
-            "/api/v1/products/best-selling", "/api/v1/customer/resendVerificationToken/**",
-            "/authenticate",
-            "/swagger-resources/**",
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/webjars/**",
-            "/v3/**",
-            "/account/creditAccount",
-            "/**"
-    };
 
+    private final JwtAuthFilter jwtAuthFilter;
+    private final CustomUserDetailService userDetailsService;
+
+    private String path = "/api/v1/auth";
+    private final String[] AUTH_WHITELIST = {
+            path +"/login", path +"/social-login", path + "/forgot-password", path + "/reset-password",
+            path + "/register", path + "/verify-code", path + "/references" ,
+            "/v3/api-docs/**",  "/configuration/**",   "/swagger*/**",
+            "/swagger-ui/**",  "/webjars/**", "/wallet/**", "/api/v1/wallet/verifyPayment/**",
+            path + "/register", path + "/verify-code", path + "/references",
+            path + "/forgot-password/**",
+            path + "/reset-password/**",
+            path + "/verify-token/**",
+            path + "/confirmRegistration",
+            path + "/**"
+    };
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
-                .csrf()
-                .disable()
+                .cors().and()
+                .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(WHITE_LISTED_URLS)
+                .requestMatchers(AUTH_WHITELIST)
                 .permitAll()
 //            .requestMatchers("/swagger-ui/**").permitAll()
                 .anyRequest()
@@ -50,14 +58,12 @@ public class WebSecurity {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authenticationProvider(authenticationProvider)
+                .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout()
                 .logoutUrl("/api/v1/auth/logout")
 //            .addLogoutHandler(logoutHandler)
-                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-        ;
-
+                .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext());
         return http.build();
     }
     @Bean
@@ -74,20 +80,22 @@ public class WebSecurity {
         };
     }
 
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-//        authProvider.setUserDetailsService(userDetailsService());
-//        authProvider.setPasswordEncoder(passwordEncoder());
-//        return authProvider;
-//    }
-//    @Bean
-//    public AuthenticationManager authenticationManager(
-//            AuthenticationConfiguration authenticationConfiguration    ) throws Exception {
-//        return authenticationConfiguration.getAuthenticationManager();
-//    }
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
+    }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }
