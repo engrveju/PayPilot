@@ -1,9 +1,9 @@
 package com.pay.paypilot.service.vtpass.pojos.response.data;
 
 
-import com.decagon.dev.paybuddy.enums.TransactionStatus;
-import com.decagon.dev.paybuddy.enums.TransactionType;
-import com.decagon.dev.paybuddy.models.Transaction;
+import com.pay.paypilot.enums.TransactionStatus;
+import com.pay.paypilot.enums.TransactionType;
+import com.pay.paypilot.model.Transaction;
 import lombok.*;
 
 import java.math.BigDecimal;
