@@ -98,10 +98,13 @@ public class UserServiceImpl implements UserService {
         newUser.setConfirmationToken(token);
         userRepository.save(newUser);
 
+        String http = servletRequest.getProtocol().substring(0,5).toLowerCase();
+        if (!http.contains("s")) {
+            http = http.substring(0,4);
+        }
 
+        String URL = http + "://"+servletRequest.getServerName()+":"+servletRequest.getServerPort()+"/api/v1/auth/confirmRegistration?token=" + token;
 
-        String URL =  "http://"+servletRequest.getServerName()+":"+servletRequest.getServerPort()+"/api/v1/auth/confirmRegistration?token=" + token;
-        System.out.println(URL);
         String link = "<h3>Hello "  + createUserRequest.getFirstName()  +
                 "<br> Click the link below to activate your account <a href=" + URL + "><br>Activate</a></h3>";
 
