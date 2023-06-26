@@ -6,6 +6,14 @@ import com.pay.paypilot.dtos.response.WalletResponse;
 import com.pay.paypilot.restartifacts.BaseResponse;
 import com.pay.paypilot.service.WalletService;
 import com.pay.paypilot.service.paystack.payStackPojos.Bank;
+import com.pay.paypilot.service.vtpass.pojos.request.BuyAirtimeRequest;
+import com.pay.paypilot.service.vtpass.pojos.request.BuyDataPlanRequest;
+import com.pay.paypilot.service.vtpass.pojos.request.BuyElectricityRequest;
+import com.pay.paypilot.service.vtpass.pojos.request.VerifyMerchantRequest;
+import com.pay.paypilot.service.vtpass.pojos.response.data.*;
+import com.pay.paypilot.service.vtpass.pojos.response.electricity.BuyElectricityResponse;
+import com.pay.paypilot.service.vtpass.pojos.response.electricity.VerifyMerchantResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,5 +55,50 @@ public class WalletController {
     @PostMapping("/verifyAccountNumber")
     public ResponseEntity<String> verifyAccountNumber(@RequestParam String accountNumber, @RequestParam String bankCode){
         return walletService.verifyAccountNumber(accountNumber, bankCode);
+    }
+    @GetMapping("/data-services")
+    public ResponseEntity<DataServicesResponse> getDataServices() {
+        return ResponseEntity.ok(walletService.getDataServices());
+    }
+
+    @GetMapping("/data-services/{dataType}")
+    public ResponseEntity<DataPlansResponse> getDataSubscriptions(
+            @Parameter(description = "glo-data, mtn-data, etisalat-data, airtel-data")
+            @PathVariable String dataType
+    ) {
+        return ResponseEntity.ok(walletService.getDataPlans(dataType));
+    }
+    @PostMapping("/buy-data-plan")
+    public ResponseEntity<BuyDataPlanResponse> buyDataPlan(@RequestBody BuyDataPlanRequest request,
+                                                           @RequestParam String pin) {
+        return ResponseEntity.ok(walletService.buyDataPlan(request, pin));
+    }
+
+    @GetMapping("/electricity-services")
+    public ResponseEntity<DataServicesResponse> getAllElectricityServices(){
+        return ResponseEntity.ok(walletService.getAllElectricityService());
+    }
+    @PostMapping("/buy-electricity")
+    public ResponseEntity<BuyElectricityResponse> buyElectricity(@RequestBody BuyElectricityRequest request, @RequestParam String pin)
+    {
+        return ResponseEntity.ok(walletService.buyElectricity(request, pin));
+    }
+
+    @PostMapping("/verify-merchant")
+    public ResponseEntity<VerifyMerchantResponse> verifyMerchant(@RequestBody VerifyMerchantRequest request)
+    {
+        return ResponseEntity.ok(walletService.verifyElectricityMeter(request));
+    }
+
+    @PostMapping("/buy-airtime")
+    public ResponseEntity<BuyAirtimeResponse> buyAirtime(@RequestBody BuyAirtimeRequest buyAirtimeRequest, @RequestParam String pin) {
+        BuyAirtimeResponse response = walletService.buyAirtimeServices(buyAirtimeRequest,pin);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+
+    @GetMapping("/airtime-services")
+    public ResponseEntity<AirtimeServiceResponse> AirtimeServices() {
+        AirtimeServiceResponse response = walletService.getAirtimeServices();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
