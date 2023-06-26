@@ -1,7 +1,6 @@
 package com.pay.paypilot.service.vtpass.pojos.response.data;
 
-
-import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
+import com.pay.paypilot.restartifacts.BaseResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,8 +1,8 @@
 package com.pay.paypilot.service.vtpass.pojos.response.data;
 
-import com.decagon.dev.paybuddy.dtos.requests.WalletTransactionDto;
-import com.decagon.dev.paybuddy.restartifacts.BaseResponse;
 
+import com.pay.paypilot.dtos.requests.WalletTransactionDto;
+import com.pay.paypilot.restartifacts.BaseResponse;
 import java.util.List;
 
 public class WalletTransactionResponse extends BaseResponse {
