@@ -1,6 +1,8 @@
 package com.pay.paypilot.utils;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -54,6 +56,12 @@ public class AppUtil {
     public String concealAccountNumber(String accountNumber) {
         String obscured = "XXXXXXXX" + accountNumber.substring(6);
         return obscured.substring(obscured.length() - 10);
+    }
+
+
+    @Bean
+    public RestTemplate getRestTemplate(){
+        return new RestTemplate();
     }
 
 }

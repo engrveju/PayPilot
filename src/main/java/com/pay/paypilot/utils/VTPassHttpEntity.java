@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class VTPassHttpEntity<T> {
-    @Value("${vtpass.api.key}")
-    private String API_KEY;
+//    @Value("${vtpass.api.key}")
+    private String API_KEY = "cf0678f6078634ccf726150c51d2ed32";
     @Value("${vtpass.secret.key}")
     private String SECRET_KEY;
     @Value("${vtpass.public.key}")
