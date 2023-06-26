@@ -13,7 +13,7 @@ public class JwtUtil {
     private final UserRepository usersRepository;
 
     public UserDetails loadByUsername(String email) throws UsernameNotFoundException {
-        return usersRepository.findByEmail(email).orElseThrow(
+        return (UserDetails) usersRepository.findByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException("Not Found"));
     }
 
