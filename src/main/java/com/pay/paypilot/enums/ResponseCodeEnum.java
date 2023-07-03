@@ -2,10 +2,6 @@ package com.pay.paypilot.enums;
 
 import lombok.Getter;
 
-/**
- *
- * @author Odira Eze
- */
 @Getter
 public enum ResponseCodeEnum {
     SUCCESS(0, "Success"),

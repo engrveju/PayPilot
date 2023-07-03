@@ -27,22 +27,13 @@ public class User
     private String firstName;
     private String lastName;
     private String otherName;
-    private String uuid;
-    @OneToOne
-    @JoinColumn(name = "address",referencedColumnName = "addressId")
-    private Address address;
     private String email;
     private String password;
-    private Integer userBvn;
-    private LocalDate dateOfBirth;
-    private Gender gender;
     private Boolean isEmailVerified = false;
-    private Boolean isBvnVerified = false;
     private Boolean isLocked = false;
     private String confirmationToken;
     private String phoneNumber;
     private int loginCount;
-
     @ManyToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "users_id", referencedColumnName = "userId"),

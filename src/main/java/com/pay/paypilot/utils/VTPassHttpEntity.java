@@ -6,11 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
-/**
- * @author Emmanuel Ugwueze
- * @created 26/06/2023 - 11:33
- * @project Pay-Pilot
- */
+
 
 @Component
 public class VTPassHttpEntity<T> {
