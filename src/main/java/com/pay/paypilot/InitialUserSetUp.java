@@ -1,5 +1,4 @@
 package com.pay.paypilot;
-;
 import com.pay.paypilot.enums.Authorities;
 import com.pay.paypilot.enums.Roles;
 import com.pay.paypilot.model.Authority;
